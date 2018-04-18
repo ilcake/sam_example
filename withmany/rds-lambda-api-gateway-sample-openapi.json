@@ -1,0 +1,180 @@
+swagger: '2.0'
+info:
+  title: "Item API"
+  description: "This is a simple API"
+  termsOfService: "https://example.com/tos/"
+  contact:
+    name: API Evangelist
+    url: https://apievangelist.com
+    email: info@apievangelist.com
+  license:
+    name: Need a License for Interface
+    url: http://example.com/license/
+  version: v1.2
+host: example.com
+basePath: /
+schemes:
+  - http
+produces:
+  - application/json
+paths:
+  /items:
+    get:
+      summary: Get Items
+      description: Returns items.
+      operationId: getItems
+      responses:
+        '200':
+          description: Item Response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/item"
+        '500':
+          description: Error Response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/error"
+      tags:
+        - Items
+      x-lambda-script: /lambda-scripts/get_items/index.js
+    post:
+      summary: Add Item
+      description: Add item.
+      operationId: addItem
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/item'
+      responses:
+        '200':
+          description: Item Response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/item"
+        '500':
+          description: Error Response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/error"
+      tags:
+        - Items
+      x-lambda-script: /lambda-scripts/create_item/index.js
+  /items//{item_id}/:
+    get:
+      summary: Get item.
+      description: Returns a single item
+      operationId: getItem
+      parameters:
+        - in: path
+          required: true
+          type: string
+          name: item_id
+          description: The item id.
+      responses:
+        '200':
+          description: Item Response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/item"
+        '500':
+          description: Error Response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/error"
+      tags:
+        - Items
+      x-lambda-script: /lambda-scripts/get_item/index.js
+    put:
+      summary: Update item.
+      description: Updates an item.
+      operationId: updateItem
+      parameters:
+        - in: path
+          required: true
+          type: string
+          name: item_id
+          description: The item id.
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/item'
+      responses:
+        '200':
+          description: Item Response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/item"
+        '403':
+          description: No Access Response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/error"
+        '500':
+          description: Error Response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/error"
+      tags:
+        - Items
+      x-lambda-script: /lambda-scripts/update_item/index.js
+    delete:
+      summary: Delete item.
+      description: Deletes an item.
+      operationId: deleteItem
+      parameters:
+        - in: path
+          required: true
+          type: string
+          name: item_id
+          description: 'The item id.'
+      responses:
+        '200':
+          description: Contact Response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/item"
+        '403':
+          description: No Access Response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/error"
+        '500':
+          description: Error Response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/error"
+      tags:
+        - Items
+      x-lambda-script: /lambda-scripts/delete_item/index.js
+definitions:
+  item:
+    description: The developer item.
+    properties:
+      item_id:
+        description: 'The id for the item.'
+        type: string
+      name:
+        description: 'The name of the item.'
+        type: string
+  error:
+    description: 'Describes an HTTP error returned'
+    properties:
+      code:
+        description: 'Repeat the HTTP status code'
+        type: integer
+      message:
+        description: 'A plain language message explaining the error'
+        type: integer

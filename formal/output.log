@@ -1,0 +1,4 @@
+2018/04/11 05:23:25 Successfully parsed template.yaml
+2018/04/11 05:23:25 Connected to Docker 1.26
+2018/04/11 05:23:25 Fetching lambci/lambda:nodejs6.10 image for nodejs6.10 runtime...
+2018/04/11 05:23:27 Reading invoke payload from stdin (you can also pass it from file with --event)

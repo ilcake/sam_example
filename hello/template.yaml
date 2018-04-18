@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Simple CRUD webservice. State is stored in a SimpleTable (DynamoDB) resource.
+Resources:
+  helloworldpython:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: A starter AWS lambda Function.
+      Runtime: python2.7
+      Handler: lambda_function.lambda_handler
+      CodeUri: ./src
+      Policies:
+        - "AWSConfigRulesExcutionRole"
+        - "AWSLambdaDynamoDBExcutionRole"
+      MemorySize: 128
+      Timeout: 10
+  MyTable:
+    Type: AWS::Serverless::SimpleTable
+  HelloWorld:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: helloworld.handler
+      Runtime: nodejs4.3
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /resource/{resourceId}
+            Method: put
